@@ -1,7 +1,5 @@
 
 public class RegularMember extends GymMember {
-
-
     private  int attendanceLimit;
     private  boolean isEligibleForUpgrade;
     private String removalReason;
@@ -10,7 +8,8 @@ public class RegularMember extends GymMember {
     private  double price;
 
     public  RegularMember(int id, String name, String location,
-                          String phone, String email,String gender, String DOB, String membershipStartDate, String referralSource){
+                          String phone, String email,String gender, String DOB,
+                          String membershipStartDate, String referralSource){
         super(id, name, location, phone, email,gender, DOB, membershipStartDate);
         this.referralSource = referralSource;
         this.isEligibleForUpgrade = false;
@@ -100,7 +99,6 @@ public class RegularMember extends GymMember {
     public String getPlan() {
         return plan;
     }
-
     public double getPrice() {
         return price;
     }

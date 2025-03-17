@@ -8,217 +8,335 @@ public class GymGUI implements ActionListener {
     ArrayList<GymMember> members = new ArrayList<>();
 
     private JFrame mainFrame;
-    private JPanel jRegularMember, jPremiumMember;
-    private JButton buttonAddRegularMember, buttonAddPremiumMember;
+    private JButton buttonAddRegularMember, buttonAddPremiumMember, buttonActivateMembership, buttonDeactivateMemberShip, buttonMarkAttendance, buttonUpgradePlan, buttonCalculateDiscount, buttonRevertMember, buttonPayDueAmount, buttonDisplay, buttonClear, buttonSaveToFile, buttonReadFromFile;
+
 
     private JRadioButton male, female;
-    private JTextField tfId, tfName, tfLocation, tfPhone, tfEmail, tfDOB, tfMembershipStartDate, tfReferralSource, tfPaidAmount, tfRemovalReason, tfTrainersName;
-    private JTextField tfRegularPlanPrice, tfDiscountAmount; // Non-editable fields
+    private JTextField tfId, tfName, tfLocation, tfPhone, tfEmail, tfDOB, tfMembershipStartDate, tfReferralSource, tfTrainersName,tfActivateMembership;
+    private JTextField tfRegularPlanPrice; // Non-editable field
     private JComboBox<String> planComboBox; // Plan selection for regular members
 
     public GymGUI() {
         mainFrame = new JFrame();
         mainFrame.setTitle("Gym Management System");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setSize(800, 600); // Increased size to fit all components
+        mainFrame.setSize(1300, 700); // Increased size to fit all components
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setLayout(null); // No Layout Manager
         mainFrame.getContentPane().setBackground(new Color(240, 240, 240)); // Light gray background
 
-        // Labels and Text Fields (Left Column)
+        // Heading Label
+        JLabel lblHeading = new JLabel("Enter All Fields to Add Regular or Premium Member");
+        lblHeading.setBounds(300, 20, 400, 30);
+        lblHeading.setFont(new Font("Arial", Font.BOLD, 16));
+        lblHeading.setForeground(new Color(50, 50, 50)); // Dark gray text
+        mainFrame.add(lblHeading);
+
+        // Common Fields (Centered)
+        JPanel commonPanel = new JPanel();
+        commonPanel.setBounds(50, 60, 900, 300);
+        commonPanel.setBackground(new Color(255, 255, 255)); // White background
+        commonPanel.setBorder(BorderFactory.createTitledBorder("Common Fields"));
+        commonPanel.setLayout(null);
+        mainFrame.add(commonPanel);
+
         JLabel lblId = new JLabel("ID:");
-        lblId.setBounds(50, 30, 120, 25);
-        mainFrame.add(lblId);
+        lblId.setBounds(20, 30, 100, 25);
+        commonPanel.add(lblId);
 
         tfId = new JTextField();
-        tfId.setBounds(180, 30, 200, 25);
-        tfId.setBackground(Color.WHITE); // White background for text fields
-        mainFrame.add(tfId);
+        tfId.setBounds(130, 30, 200, 25);
+        tfId.setBackground(Color.WHITE);
+        commonPanel.add(tfId);
 
         JLabel lblName = new JLabel("Name:");
-        lblName.setBounds(50, 70, 120, 25);
-        mainFrame.add(lblName);
+        lblName.setBounds(20, 70, 100, 25);
+        commonPanel.add(lblName);
 
         tfName = new JTextField();
-        tfName.setBounds(180, 70, 200, 25);
+        tfName.setBounds(130, 70, 200, 25);
         tfName.setBackground(Color.WHITE);
-        mainFrame.add(tfName);
+        commonPanel.add(tfName);
 
         JLabel lblLocation = new JLabel("Location:");
-        lblLocation.setBounds(50, 110, 120, 25);
-        mainFrame.add(lblLocation);
+        lblLocation.setBounds(20, 110, 100, 25);
+        commonPanel.add(lblLocation);
 
         tfLocation = new JTextField();
-        tfLocation.setBounds(180, 110, 200, 25);
+        tfLocation.setBounds(130, 110, 200, 25);
         tfLocation.setBackground(Color.WHITE);
-        mainFrame.add(tfLocation);
+        commonPanel.add(tfLocation);
 
         JLabel lblPhone = new JLabel("Phone:");
-        lblPhone.setBounds(50, 150, 120, 25);
-        mainFrame.add(lblPhone);
+        lblPhone.setBounds(20, 150, 100, 25);
+        commonPanel.add(lblPhone);
 
         tfPhone = new JTextField();
-        tfPhone.setBounds(180, 150, 200, 25);
+        tfPhone.setBounds(130, 150, 200, 25);
         tfPhone.setBackground(Color.WHITE);
-        mainFrame.add(tfPhone);
+        commonPanel.add(tfPhone);
 
         JLabel lblEmail = new JLabel("Email:");
-        lblEmail.setBounds(50, 190, 120, 25);
-        mainFrame.add(lblEmail);
+        lblEmail.setBounds(20, 190, 100, 25);
+        commonPanel.add(lblEmail);
 
         tfEmail = new JTextField();
-        tfEmail.setBounds(180, 190, 200, 25);
+        tfEmail.setBounds(130, 190, 200, 25);
         tfEmail.setBackground(Color.WHITE);
-        mainFrame.add(tfEmail);
+        commonPanel.add(tfEmail);
 
         JLabel lblDOB = new JLabel("DOB:");
-        lblDOB.setBounds(50, 230, 120, 25);
-        mainFrame.add(lblDOB);
+        lblDOB.setBounds(20, 230, 100, 25);
+        commonPanel.add(lblDOB);
 
         tfDOB = new JTextField();
-        tfDOB.setBounds(180, 230, 200, 25);
+        tfDOB.setBounds(130, 230, 200, 25);
         tfDOB.setBackground(Color.WHITE);
-        mainFrame.add(tfDOB);
+        commonPanel.add(tfDOB);
 
-        // Labels and Text Fields (Right Column)
         JLabel lblMembershipStartDate = new JLabel("Membership Start Date:");
-        lblMembershipStartDate.setBounds(450, 30, 150, 25);
-        mainFrame.add(lblMembershipStartDate);
+        lblMembershipStartDate.setBounds(350, 30, 150, 25);
+        commonPanel.add(lblMembershipStartDate);
 
         tfMembershipStartDate = new JTextField();
-        tfMembershipStartDate.setBounds(600, 30, 150, 25);
+        tfMembershipStartDate.setBounds(510, 30, 200, 25);
         tfMembershipStartDate.setBackground(Color.WHITE);
-        mainFrame.add(tfMembershipStartDate);
-
-        JLabel lblPaidAmount = new JLabel("Paid Amount:");
-        lblPaidAmount.setBounds(450, 70, 120, 25);
-        mainFrame.add(lblPaidAmount);
-
-        tfPaidAmount = new JTextField();
-        tfPaidAmount.setBounds(600, 70, 150, 25);
-        tfPaidAmount.setBackground(Color.WHITE);
-        mainFrame.add(tfPaidAmount);
-
-        JLabel lblRemovalReason = new JLabel("Removal Reason:");
-        lblRemovalReason.setBounds(450, 110, 120, 25);
-        mainFrame.add(lblRemovalReason);
-
-        tfRemovalReason = new JTextField();
-        tfRemovalReason.setBounds(600, 110, 150, 25);
-        tfRemovalReason.setBackground(Color.WHITE);
-        mainFrame.add(tfRemovalReason);
+        commonPanel.add(tfMembershipStartDate);
 
         JLabel lblGender = new JLabel("Gender:");
-        lblGender.setBounds(450, 150, 120, 25);
-        mainFrame.add(lblGender);
+        lblGender.setBounds(350, 70, 100, 25);
+        commonPanel.add(lblGender);
 
         male = new JRadioButton("Male");
-        male.setBounds(600, 150, 80, 25);
-        male.setBackground(new Color(240, 240, 240)); // Match frame background
-        mainFrame.add(male);
+        male.setBounds(510, 70, 80, 25);
+        male.setBackground(Color.WHITE);
+        commonPanel.add(male);
 
         female = new JRadioButton("Female");
-        female.setBounds(690, 150, 80, 25);
-        female.setBackground(new Color(240, 240, 240)); // Match frame background
-        mainFrame.add(female);
+        female.setBounds(600, 70, 80, 25);
+        female.setBackground(Color.WHITE);
+        commonPanel.add(female);
 
         ButtonGroup genderGroup = new ButtonGroup();
         genderGroup.add(male);
         genderGroup.add(female);
 
-        // Referral Source (Near Regular Member Button)
+        // Regular Member Specific Fields (Left Side)
+        JPanel regularPanel = new JPanel();
+        regularPanel.setBounds(50, 380, 400, 250);
+        regularPanel.setBackground(new Color(255, 255, 255)); // White background
+        regularPanel.setBorder(BorderFactory.createTitledBorder("Regular Member Fields"));
+        regularPanel.setLayout(null);
+        mainFrame.add(regularPanel);
+
         JLabel lblReferralSource = new JLabel("Referral Source:");
-        lblReferralSource.setBounds(50, 300, 120, 25);
-        mainFrame.add(lblReferralSource);
+        lblReferralSource.setBounds(20, 30, 120, 25);
+        regularPanel.add(lblReferralSource);
 
         tfReferralSource = new JTextField();
-        tfReferralSource.setBounds(180, 300, 200, 25);
+        tfReferralSource.setBounds(150, 30, 200, 25);
         tfReferralSource.setBackground(Color.WHITE);
-        mainFrame.add(tfReferralSource);
+        regularPanel.add(tfReferralSource);
 
-        // Trainer’s Name (Near Premium Member Button)
-        JLabel lblTrainersName = new JLabel("Trainer’s Name:");
-        lblTrainersName.setBounds(450, 300, 120, 25);
-        mainFrame.add(lblTrainersName);
-
-        tfTrainersName = new JTextField();
-        tfTrainersName.setBounds(600, 300, 150, 25);
-        tfTrainersName.setBackground(Color.WHITE);
-        mainFrame.add(tfTrainersName);
-
-        // Non-editable Text Fields
         JLabel lblRegularPlanPrice = new JLabel("Regular Plan Price:");
-        lblRegularPlanPrice.setBounds(50, 340, 120, 25);
-        mainFrame.add(lblRegularPlanPrice);
+        lblRegularPlanPrice.setBounds(20, 70, 120, 25);
+        regularPanel.add(lblRegularPlanPrice);
 
         tfRegularPlanPrice = new JTextField();
         tfRegularPlanPrice.setText("6500");
-        tfRegularPlanPrice.setBounds(180, 340, 200, 25);
+        tfRegularPlanPrice.setBounds(150, 70, 200, 25);
         tfRegularPlanPrice.setBackground(Color.WHITE);
-        tfRegularPlanPrice.setEditable(false); // Non-editable
-        mainFrame.add(tfRegularPlanPrice);
+        tfRegularPlanPrice.setEditable(false);
+        regularPanel.add(tfRegularPlanPrice);
 
-
-
-        // Plan ComboBox for Regular Members
         JLabel lblPlan = new JLabel("Plan:");
-        lblPlan.setBounds(50, 380, 120, 25);
-        mainFrame.add(lblPlan);
+        lblPlan.setBounds(20, 110, 120, 25);
+        regularPanel.add(lblPlan);
 
         planComboBox = new JComboBox<>(new String[]{"Basic", "Standard", "Deluxe"});
-        planComboBox.setBounds(180, 380, 150, 25);
-        mainFrame.add(planComboBox);
+        planComboBox.setBounds(150, 110, 200, 25);
+        regularPanel.add(planComboBox);
 
-        // Buttons
         buttonAddRegularMember = new JButton("Add Regular Member");
-        buttonAddRegularMember.setBounds(150, 420, 200, 30);
+        buttonAddRegularMember.setBounds(100, 170, 200, 30);
         buttonAddRegularMember.setBackground(new Color(50, 150, 250)); // Blue button
-        buttonAddRegularMember.setForeground(Color.WHITE); // White text
+        buttonAddRegularMember.setForeground(Color.black);
         buttonAddRegularMember.addActionListener(this);
-        mainFrame.add(buttonAddRegularMember);
+        regularPanel.add(buttonAddRegularMember);
+
+
+        buttonActivateMembership = new JButton("Activate membership");
+        buttonActivateMembership.setBounds(1000,60,200,30);
+        buttonActivateMembership.setForeground(Color.DARK_GRAY);
+        buttonActivateMembership.addActionListener(this);
+        mainFrame.add(buttonActivateMembership);
+
+
+        buttonDeactivateMemberShip = new JButton("Deactivate membership");
+        buttonDeactivateMemberShip.setBounds(1000,130,200,30);
+        buttonDeactivateMemberShip.setForeground(Color.black);
+        buttonDeactivateMemberShip.setBackground(Color.red);
+        buttonDeactivateMemberShip.addActionListener(this);
+        mainFrame.add(buttonDeactivateMemberShip);
+
+
+
+        buttonMarkAttendance = new JButton("Mark attendance");
+        buttonMarkAttendance.setBounds(1000,200,200,30);
+        buttonMarkAttendance.setForeground(Color.black);
+        buttonMarkAttendance.setBackground(Color.green);
+        buttonMarkAttendance.addActionListener(this);
+        mainFrame.add(buttonMarkAttendance);
+
+
+
+
+
+        buttonUpgradePlan = new JButton("Upgrade plan");
+        buttonUpgradePlan.setBounds(1000,270,200,30);
+        buttonUpgradePlan.setForeground(Color.black);
+        buttonUpgradePlan.setBackground(Color.gray);
+        buttonUpgradePlan.addActionListener(this);
+
+        mainFrame.add(buttonUpgradePlan);
+
+
+
+        buttonCalculateDiscount = new JButton("Calculate Discount");
+        buttonCalculateDiscount.setBounds(1000,340,200,30);
+        buttonCalculateDiscount.setForeground(Color.BLACK);
+        buttonCalculateDiscount.setBackground(Color.GREEN);
+        buttonCalculateDiscount.addActionListener(this);
+        mainFrame.add(buttonCalculateDiscount);
+        // Premium Member Specific Fields (Right Side)
+        JPanel premiumPanel = new JPanel();
+        premiumPanel.setBounds(530, 380, 400, 250);
+        premiumPanel.setBackground(new Color(255, 255, 255)); // White background
+        premiumPanel.setBorder(BorderFactory.createTitledBorder("Premium Member Fields"));
+        premiumPanel.setLayout(null);
+        mainFrame.add(premiumPanel);
+
+        JLabel lblTrainersName = new JLabel("Trainer’s Name:");
+        lblTrainersName.setBounds(20, 30, 120, 25);
+        premiumPanel.add(lblTrainersName);
+
+        tfTrainersName = new JTextField();
+        tfTrainersName.setBounds(150, 30, 200, 25);
+        tfTrainersName.setBackground(Color.WHITE);
+        premiumPanel.add(tfTrainersName);
 
         buttonAddPremiumMember = new JButton("Add Premium Member");
-        buttonAddPremiumMember.setBounds(550, 420, 200, 30);
-        buttonAddPremiumMember.setBackground(new Color(50, 150, 250)); // Blue button
-        buttonAddPremiumMember.setForeground(Color.WHITE); // White text
+        buttonAddPremiumMember.setBounds(100, 170, 200, 30);
+        buttonAddPremiumMember.setBackground(new Color(200, 0, 100)); // Red button
+        buttonAddPremiumMember.setForeground(Color.WHITE);
         buttonAddPremiumMember.addActionListener(this);
-        mainFrame.add(buttonAddPremiumMember);
+        premiumPanel.add(buttonAddPremiumMember);
 
         // Show the frame
         mainFrame.setVisible(true);
     }
 
     public void addRegularMember() {
-        String id = tfId.getText();
-        String name = tfName.getText();
-        String location = tfLocation.getText();
-        String phone = tfPhone.getText();
-        String email = tfEmail.getText();
-        String gender = male.isSelected() ? "Male" : "Female";
-        String DOB = tfDOB.getText();
-        String memberShipStartDate = tfMembershipStartDate.getText();
-        String referralSource = tfReferralSource.getText();
-        String plan = (String) planComboBox.getSelectedItem();
+        try {
+            int id = Integer.parseInt(tfId.getText());
+            String name = tfName.getText();
+            String location = tfLocation.getText();
+            String phone = tfPhone.getText();
+            String email = tfEmail.getText();
+            String gender = male.isSelected() ? "Male" : "Female";
+            String DOB = tfDOB.getText();
+            String memberShipStartDate = tfMembershipStartDate.getText();
+            String referralSource = tfReferralSource.getText();
+            if (name.isEmpty() || location.isEmpty() || phone.isEmpty() || email.isEmpty() || gender.isEmpty() || DOB.isEmpty() || memberShipStartDate.isEmpty() || referralSource.isEmpty()) {
+                JOptionPane.showMessageDialog(mainFrame, "All fields are required. Please fill in all fields.", "Error", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
 
+            boolean alreadyExists = checkId(id);
+            if (alreadyExists) {
+                JOptionPane.showMessageDialog(mainFrame, "User with this ID already exists. Enter a new ID.", "Duplicate ID", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
 
+            GymMember gymMember = new RegularMember(id, name, location, phone, email, gender, DOB, memberShipStartDate, referralSource);
+            members.add(gymMember);
+            JOptionPane.showMessageDialog(mainFrame, "Regular Member Added Successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (NumberFormatException exception) {
+            JOptionPane.showMessageDialog(mainFrame, "ID must be a number. Please enter a valid ID.", "Error", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     public void addPremiumMember() {
-        String id = tfId.getText();
-        String name = tfName.getText();
-        String location = tfLocation.getText();
-        String phone = tfPhone.getText();
-        String email = tfEmail.getText();
-        String gender = male.isSelected() ? "Male" : "Female";
-        String DOB = tfDOB.getText();
-        String memberShipStartDate = tfMembershipStartDate.getText();
-        String personalTrainer = tfTrainersName.getText();
+        try {
+            int id = Integer.parseInt(tfId.getText());
+            String name = tfName.getText();
+            String location = tfLocation.getText();
+            String phone = tfPhone.getText();
+            String email = tfEmail.getText();
+            String gender = male.isSelected() ? "Male" : "Female";
+            String DOB = tfDOB.getText();
+            String memberShipStartDate = tfMembershipStartDate.getText();
+            String personalTrainer = tfTrainersName.getText();
+
+            if (name.isEmpty() || location.isEmpty() || phone.isEmpty() || email.isEmpty() || gender.isEmpty() || DOB.isEmpty() || memberShipStartDate.isEmpty() || personalTrainer.isEmpty()) {
+                JOptionPane.showMessageDialog(mainFrame, "All fields are required. Please fill in all fields.", "Error", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            boolean alreadyExists = checkId(id);
+            if (alreadyExists) {
+                JOptionPane.showMessageDialog(mainFrame, "User with this ID already exists. Enter a new ID.", "Duplicate ID", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            GymMember gymMember = new PremiumMember(id, name, location, phone, email, gender, DOB, memberShipStartDate, personalTrainer);
+            members.add(gymMember);
+            JOptionPane.showMessageDialog(mainFrame, "Premium Member Added Successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (NumberFormatException exception) {
+            JOptionPane.showMessageDialog(mainFrame, "ID must be a number. Please enter a valid ID.", "Error", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    public boolean checkId(int id) {
+        for (GymMember member : members) {
+            if (member.getId() == id) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
+    public void openFrameToActivateMembership(){
+        JFrame frame = new JFrame();
+        frame.setLayout(null);
+        frame.setVisible(true);
+        frame.setBounds(400,50,400,400);
+        tfActivateMembership = new JTextField();
+        tfActivateMembership.setBounds(50, 50, 100, 30);
+    }
+
+
+    public void openFrameToDeactivateMembership(){
+        JFrame frame = new JFrame();
+        frame.setLayout(null);
+        frame.setVisible(true);
+        frame.setBounds(400,50,400,400);
+        tfActivateMembership = new JTextField();
+        tfActivateMembership.setBounds(50, 50, 100, 30);
+    }
+
+    public  void markAttendanceFrame(){
+        JFrame frame = new JFrame();
+        frame.setLayout(null);
+        frame.setVisible(true);
+        frame.setBounds(400,50,400,400);
+        tfActivateMembership = new JTextField();
+        tfActivateMembership.setBounds(50, 50, 100, 30);
     }
 
     public static void main(String[] args) {
-        new GymGUI();
+         new GymGUI();
     }
 
     @Override
@@ -227,6 +345,13 @@ public class GymGUI implements ActionListener {
             addRegularMember();
         } else if (e.getSource() == buttonAddPremiumMember) {
             addPremiumMember();
+        }else if (e.getSource()==buttonActivateMembership){
+            openFrameToActivateMembership();
+        }else if (e.getSource()==buttonDeactivateMemberShip){
+            openFrameToDeactivateMembership();
+        } else if ( e.getSource()==buttonMarkAttendance) {
+            markAttendanceFrame();
+
         }
     }
 }
