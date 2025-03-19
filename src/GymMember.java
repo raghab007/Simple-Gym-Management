@@ -85,7 +85,6 @@ public abstract class GymMember {
         activeStatus = false;
     }
 
-
     public void resetMember(){
         activeStatus = false;
         attendance = 0;
