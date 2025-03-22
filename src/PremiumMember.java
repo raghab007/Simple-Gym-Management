@@ -47,7 +47,7 @@ public class PremiumMember extends GymMember {
 
         if (this.paidAmount+paidAmount>premiumCharge){
             System.out.println("Payment is more than the remaining premium charge");
-            return "Payment is more than the remaing premium charge";
+            return "Payment is more than the remaining premium charge";
         }
 
         this.paidAmount = this.paidAmount+paidAmount;
@@ -64,11 +64,16 @@ public class PremiumMember extends GymMember {
 
     }
 
-    public void calculateDiscount(){
+    public String calculateDiscount(){
         if (isFullPayment){
             discountAmount = ((double) 10 /100)*premiumCharge;
             System.out.println("Congratulations you have got 10% discount i.e RS "+discountAmount);
+            return "Congratulations you have got 10% discount i.e RS "+discountAmount;
         }
+
+        return "Sorry you havenot done the full payment, so you dont get any discount";
+
+
     }
 
     public void revertPremiumUser(){

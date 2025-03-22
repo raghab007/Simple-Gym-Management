@@ -7,13 +7,13 @@ import java.util.ArrayList;
 public class GymGUI implements ActionListener {
     ArrayList<GymMember> members = new ArrayList<>();
 
-    private JFrame mainFrame,activateMembershipFrame, deactivateMembershipFrame;
-    private JButton buttonAddRegularMember, buttonAddPremiumMember, buttonActivateMembership, buttonDeactivateMemberShip, buttonMarkAttendance, buttonUpgradePlan, buttonCalculateDiscount, buttonRevertMember, buttonPayDueAmount, buttonDisplay, buttonClear, buttonSaveToFile, buttonReadFromFile,buttonActivateMembership2,buttonDeactivateMemberShip2;
+    private JFrame mainFrame,activateMembershipFrame, deactivateMembershipFrame, markAttendanceFrame,upgradePlanFrame,calculateDiscountFrame,payDueAmountFrame;
+    private JButton buttonAddRegularMember, buttonAddPremiumMember, buttonActivateMembership, buttonDeactivateMemberShip, buttonMarkAttendance, buttonUpgradePlan, buttonCalculateDiscount, buttonRevertMember, buttonPayDueAmount, buttonDisplay, buttonClear, buttonSaveToFile, buttonReadFromFile,buttonActivateMembership2,buttonDeactivateMemberShip2, buttonMarkAttendance2, buttonCalculateDiscount2, buttonUpgradePlan2, buttonPayDueAmount2;
 
     private JRadioButton male, female;
-    private JTextField tfId, tfName, tfLocation, tfPhone, tfEmail, tfDOB, tfMembershipStartDate, tfReferralSource, tfTrainersName, tfActivateMembership, tfDeactivateMembership;
+    private JTextField tfId, tfName, tfLocation, tfPhone, tfEmail, tfDOB, tfMembershipStartDate, tfReferralSource, tfTrainersName, tfActivateMembership, tfDeactivateMembership, tfMarkAttendance, tfCalculateDiscount,tfUpgradePlan,tfPayDueAmount,tfDueAmount;
     private JTextField tfRegularPlanPrice; // Non-editable field
-    private JComboBox<String> planComboBox; // Plan selection for regular members
+    private JComboBox<String> planComboBox, changePlanComboBox; // Plan selection for regular members
 
     public GymGUI() {
         mainFrame = new JFrame();
@@ -165,7 +165,7 @@ public class GymGUI implements ActionListener {
         regularPanel.add(buttonAddRegularMember);
 
         buttonActivateMembership = new JButton("Activate membership");
-        buttonActivateMembership.setBounds(1000, 60, 200, 30);
+        buttonActivateMembership.setBounds(1050, 60, 200, 30);
         buttonActivateMembership.setBackground(new Color(54, 231, 40)); // Green button
         buttonActivateMembership.setForeground(Color.black);
         buttonActivateMembership.addActionListener(this);
@@ -173,7 +173,7 @@ public class GymGUI implements ActionListener {
         mainFrame.add(buttonActivateMembership);
 
         buttonDeactivateMemberShip = new JButton("Deactivate membership");
-        buttonDeactivateMemberShip.setBounds(1000, 130, 200, 30);
+        buttonDeactivateMemberShip.setBounds(1050, 130, 200, 30);
         buttonDeactivateMemberShip.setBackground(new Color(231, 46, 40)); // Red button
         buttonDeactivateMemberShip.setForeground(Color.white);
         buttonDeactivateMemberShip.addActionListener(this);
@@ -181,7 +181,7 @@ public class GymGUI implements ActionListener {
         mainFrame.add(buttonDeactivateMemberShip);
 
         buttonMarkAttendance = new JButton("Mark attendance");
-        buttonMarkAttendance.setBounds(1000, 200, 200, 30);
+        buttonMarkAttendance.setBounds(1050, 200, 200, 30);
         buttonMarkAttendance.setBackground(new Color(255, 153, 51)); // Orange button
         buttonMarkAttendance.setForeground(Color.WHITE);
         buttonMarkAttendance.addActionListener(this);
@@ -189,7 +189,7 @@ public class GymGUI implements ActionListener {
         mainFrame.add(buttonMarkAttendance);
 
         buttonUpgradePlan = new JButton("Upgrade plan");
-        buttonUpgradePlan.setBounds(1000, 270, 200, 30);
+        buttonUpgradePlan.setBounds(1050, 270, 200, 30);
         buttonUpgradePlan.setBackground(new Color(102, 102, 255)); // Light blue button
         buttonUpgradePlan.setForeground(Color.WHITE);
         buttonUpgradePlan.addActionListener(this);
@@ -197,7 +197,7 @@ public class GymGUI implements ActionListener {
         mainFrame.add(buttonUpgradePlan);
 
         buttonCalculateDiscount = new JButton("Calculate Discount");
-        buttonCalculateDiscount.setBounds(1000, 340, 200, 30);
+        buttonCalculateDiscount.setBounds(1050, 340, 200, 30);
         buttonCalculateDiscount.setBackground(new Color(0, 153, 153)); // Teal button
         buttonCalculateDiscount.setForeground(Color.WHITE);
         buttonCalculateDiscount.setFocusable(false);
@@ -206,7 +206,7 @@ public class GymGUI implements ActionListener {
 
 
         buttonRevertMember = new JButton("Revert Member");
-        buttonRevertMember.setBounds(1000,410,200,30);
+        buttonRevertMember.setBounds(1050,410,200,30);
         buttonRevertMember.setBackground(new Color(194, 92, 140));
         buttonRevertMember.addActionListener(this);
         buttonRevertMember.setFocusable(false);
@@ -214,7 +214,7 @@ public class GymGUI implements ActionListener {
 
 
         buttonPayDueAmount = new JButton("Pay due amount");
-        buttonPayDueAmount.setBounds(1000,480, 200,30);
+        buttonPayDueAmount.setBounds(1050,480, 200,30);
         buttonPayDueAmount.setBackground(new Color(14, 227, 168, 82));
         buttonPayDueAmount.addActionListener(this);
         buttonPayDueAmount.setFocusable(false);
@@ -230,7 +230,7 @@ public class GymGUI implements ActionListener {
 
         buttonClear = new JButton("Clear");
         buttonClear.setBounds(350,650,200,30);
-        buttonClear.setBackground(new Color(106, 30,200));
+        buttonClear.setBackground(new Color(194, 175, 217));
         mainFrame.add(buttonClear);
 
 
@@ -408,21 +408,151 @@ public class GymGUI implements ActionListener {
         deactivateMembershipFrame.setBounds(400, 50, 400, 400);
         tfDeactivateMembership = new JTextField();
         tfDeactivateMembership.setBounds(100, 50, 200, 30);
-        tfDeactivateMembership.setText("Enter id to activate membership");
-        buttonDeactivateMemberShip2= new JButton("Activate membership");
+        tfDeactivateMembership.setText("Enter id to deactivate membership");
+        buttonDeactivateMemberShip2= new JButton("Deactivate membership");
         buttonDeactivateMemberShip2.setBounds(100, 150, 200,30);
         buttonDeactivateMemberShip2.addActionListener(this);
-        deactivateMembershipFrame.add(tfActivateMembership);
-        deactivateMembershipFrame.add(buttonActivateMembership2);
+        deactivateMembershipFrame.add(tfDeactivateMembership);
+        deactivateMembershipFrame.add(buttonDeactivateMemberShip2);
     }
 
     public void markAttendanceFrame() {
-        JFrame frame = new JFrame();
-        frame.setLayout(null);
-        frame.setVisible(true);
-        frame.setBounds(400, 50, 400, 400);
-        tfActivateMembership = new JTextField();
-        tfActivateMembership.setBounds(50, 50, 100, 30);
+        markAttendanceFrame = new JFrame();
+        markAttendanceFrame.setLayout(null);
+        markAttendanceFrame.setVisible(true);
+        markAttendanceFrame.setBounds(400, 50, 400, 400);
+        tfMarkAttendance = new JTextField();
+        tfMarkAttendance.setBounds(100, 50, 200, 30);
+        tfMarkAttendance.setText("Enter id to activate membership");
+        buttonMarkAttendance2= new JButton("Activate membership");
+        buttonMarkAttendance2.setBounds(100, 150, 200,30);
+        buttonMarkAttendance2.addActionListener(this);
+        markAttendanceFrame.add(tfMarkAttendance);
+        markAttendanceFrame.add(buttonMarkAttendance2);
+    }
+
+    public void upgradePlanFrame(){
+        upgradePlanFrame = new JFrame();
+        upgradePlanFrame.setLayout(null);
+        upgradePlanFrame.setVisible(true);
+        upgradePlanFrame.setBounds(400, 50, 400, 400);
+        tfUpgradePlan= new JTextField();
+        changePlanComboBox = new JComboBox<>(new String[]{"Basic", "Standard", "Deluxe"});
+        tfUpgradePlan.setBounds(100, 50, 200, 30);
+        tfUpgradePlan.setText("Enter id to upgrade plan");
+        changePlanComboBox.setBounds(150,150,100,30);
+        buttonUpgradePlan2= new JButton("Calculate Discount");
+        buttonUpgradePlan2.setBounds(100, 250, 200,30);
+        buttonUpgradePlan2.addActionListener(this);
+        upgradePlanFrame.add(tfUpgradePlan);
+        upgradePlanFrame.add(changePlanComboBox);
+        upgradePlanFrame.add(buttonUpgradePlan2);
+    }
+
+    public void calculateDiscountFrame(){
+        calculateDiscountFrame = new JFrame();
+        calculateDiscountFrame.setLayout(null);
+        calculateDiscountFrame.setVisible(true);
+        calculateDiscountFrame.setBounds(400, 50, 400, 400);
+        tfCalculateDiscount = new JTextField();
+        tfCalculateDiscount.setBounds(100, 50, 200, 30);
+        tfCalculateDiscount.setText("Enter id to calculate discount");
+        buttonCalculateDiscount2= new JButton("Calculate Discount");
+        buttonCalculateDiscount2.setBounds(100, 150, 200,30);
+        buttonCalculateDiscount2.addActionListener(this);
+        calculateDiscountFrame.add(tfCalculateDiscount);
+        calculateDiscountFrame.add(buttonCalculateDiscount2);
+
+    }
+
+
+
+
+    public  void payDueAmountFrame(){
+        payDueAmountFrame = new JFrame();
+        payDueAmountFrame.setLayout(null);
+        payDueAmountFrame.setVisible(true);
+        payDueAmountFrame.setBounds(400,50,400,400);
+        tfPayDueAmount = new JTextField();
+        tfPayDueAmount.setBounds(100, 50, 200, 30);
+        tfPayDueAmount.setText("Enter id to pay due amount");
+        tfDueAmount = new JTextField();
+        tfDueAmount.setBounds(100,150,200,30);
+        tfDueAmount.setText("Enter Amount to pay");
+        buttonPayDueAmount2= new JButton("Pay Amount");
+        buttonPayDueAmount2.setBounds(100, 250, 200,30);
+        buttonPayDueAmount2.addActionListener(this);
+        payDueAmountFrame.add(tfPayDueAmount);
+        payDueAmountFrame.add(tfDueAmount);
+        payDueAmountFrame.add(buttonPayDueAmount2);
+    }
+
+    public void payDueAmount(){
+
+        String idinString = tfPayDueAmount.getText();
+        String amountinString = tfDueAmount.getText();
+
+        try{
+            int id = Integer.parseInt(idinString);
+            int amount = Integer.parseInt(amountinString);
+            for (GymMember gymMember:members){
+                if (gymMember.getId()==id && gymMember instanceof  PremiumMember){
+                    String result = ((PremiumMember) gymMember).payDueAmount(amount);
+                    JOptionPane.showMessageDialog(deactivateMembershipFrame, result, "Message", JOptionPane.INFORMATION_MESSAGE);
+                   return;
+
+                }
+            }
+            JOptionPane.showMessageDialog(deactivateMembershipFrame, "Id does not exists", "Message", JOptionPane.WARNING_MESSAGE);
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(deactivateMembershipFrame, "ID or amount must be a number. Please enter a valid ID.", "Error", JOptionPane.WARNING_MESSAGE);
+
+        }
+    }
+
+
+    public  void  upgradePlan(){
+        String text = tfUpgradePlan.getText();
+        String plan =(String)changePlanComboBox.getSelectedItem();
+        try{
+            int id = Integer.parseInt(text);
+            GymMember gymMember = null;
+            for (GymMember member:members){
+                if (member.getId()==id && member instanceof  RegularMember){
+                    gymMember = member;
+                    break;
+                }
+            }
+            if (gymMember!=null){
+                RegularMember regularMember = (RegularMember) gymMember;
+                String s = regularMember.upgradePlan(plan);
+                JOptionPane.showMessageDialog(deactivateMembershipFrame, s, "message", JOptionPane.INFORMATION_MESSAGE);
+            }else {
+                JOptionPane.showMessageDialog(deactivateMembershipFrame, "User with this ID doesnot exists. Please enter a valid ID.", "Error", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(deactivateMembershipFrame, "ID must be a number. Please enter a valid ID.", "Error", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+
+    public void calculateDiscount(){
+        String text = tfCalculateDiscount.getText();
+        try{
+            int id  = Integer.parseInt(text);
+            for (GymMember member :members){
+                if (member.getId()==id && member instanceof  PremiumMember){
+                    PremiumMember premiumMember = (PremiumMember)  member;
+                    String s = premiumMember.calculateDiscount();
+                    JOptionPane.showMessageDialog(deactivateMembershipFrame, s, "Message", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+            }
+            JOptionPane.showMessageDialog(deactivateMembershipFrame, "User with this id doesnot exists", "Message", JOptionPane.INFORMATION_MESSAGE);
+        }catch (NumberFormatException exception){
+            JOptionPane.showMessageDialog(deactivateMembershipFrame, "ID must be a number. Please enter a valid ID.", "Error", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
 
@@ -446,6 +576,19 @@ public class GymGUI implements ActionListener {
             activateMembership();
         }else if (e.getSource()==buttonDeactivateMemberShip2){
             deactivateMembership();
+        }else if (e.getSource()==buttonCalculateDiscount){
+            calculateDiscountFrame();
+        }else if (e.getSource()==buttonUpgradePlan){
+            upgradePlanFrame();
+        } else if (e.getSource()==buttonUpgradePlan2) {
+            upgradePlan();
+
+        }else  if (e.getSource()==buttonCalculateDiscount2){
+            calculateDiscount();
+        }else if (e.getSource()==buttonPayDueAmount){
+            payDueAmountFrame();
+        }else if (e.getSource()==buttonPayDueAmount2){
+            payDueAmount();
         }
     }
 }
