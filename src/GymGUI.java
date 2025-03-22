@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class GymGUI implements ActionListener {
@@ -224,21 +226,24 @@ public class GymGUI implements ActionListener {
         buttonDisplay = new JButton("Display");
         buttonDisplay.setBounds(120,650,200,30);
         buttonDisplay.setBackground(new Color(26, 170, 197));
+        buttonDisplay.addActionListener(this);
         mainFrame.add(buttonDisplay);
 
 
 
-        buttonClear = new JButton("Clear");
-        buttonClear.setBounds(350,650,200,30);
-        buttonClear.setBackground(new Color(194, 175, 217));
-        mainFrame.add(buttonClear);
-
 
         buttonSaveToFile = new JButton("Save to file");
-        buttonReadFromFile  = new JButton("Read from file");
-        buttonReadFromFile.setBounds(580,650,200,30);
-        buttonReadFromFile.setBackground(new Color(200, 30, 89));
+        buttonSaveToFile.setBounds(350,650,200,30);
+        buttonSaveToFile.setBackground(new Color(194, 0, 217));
+        buttonSaveToFile.addActionListener(this);
         mainFrame.add(buttonSaveToFile);
+
+
+//        buttonSaveToFile = new JButton("Save to file");
+//        buttonReadFromFile  = new JButton("Read from file");
+//        buttonReadFromFile.setBounds(750,650,200,30);
+//        buttonReadFromFile.setBackground(new Color(200, 30, 89));
+//        mainFrame.add(buttonSaveToFile);
 
 
 
@@ -555,6 +560,121 @@ public class GymGUI implements ActionListener {
         }
     }
 
+    public void displayAllMembers() {
+        if (members.isEmpty()) {
+            JOptionPane.showMessageDialog(mainFrame, "No members found.", "All Members", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Column names for the table
+        String[] columnNames = {
+                "ID", "Name", "Location", "Phone", "Email", "Gender", "DOB",
+                "Membership Start Date", "Attendance", "Loyalty Points", "Active Status"
+        };
+
+        // Create a 2D array to hold the member data
+        Object[][] data = new Object[members.size()][columnNames.length];
+
+        // Populate the data array with member details
+        for (int i = 0; i < members.size(); i++) {
+            GymMember member = members.get(i);
+            data[i][0] = member.getId();
+            data[i][1] = member.getName();
+            data[i][2] = member.getLocation();
+            data[i][3] = member.getPhone();
+            data[i][4] = member.getEmail();
+            data[i][5] = member.getGender();
+            data[i][6] = member.getDOB();
+            data[i][7] = member.getMembershipStartDate();
+            data[i][8] = member.getAttendance();
+            data[i][9] = member.getLoyaltyPoints();
+            data[i][10] = member.isActiveStatus() ? "Active" : "Inactive";
+        }
+
+        // Create a JTable with the data and column names
+        JTable table = new JTable(data, columnNames);
+        table.setFillsViewportHeight(true);
+
+        // Add the table to a scroll pane
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        // Create a new frame to display the table
+        JFrame tableFrame = new JFrame("All Members");
+        tableFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        tableFrame.setSize(1000, 400);
+        tableFrame.setLocationRelativeTo(mainFrame);
+        tableFrame.add(scrollPane);
+        tableFrame.setVisible(true);
+    }
+
+
+    public void saveToFile() {
+        if (members.isEmpty()) {
+            JOptionPane.showMessageDialog(mainFrame, "No members to save.", "Save to File", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Define the header format
+        String header = String.format("%-5s %-15s %-15s %-15s %-25s %-20s %-10s %-10s %-10s %-15s %-10s %-15s %-15s %-15s %-15s %-15s\n",
+                "ID", "Name", "Location", "Phone", "Email", "Membership Start Date", "Plan", "Price", "Attendance", "Loyalty Points", "Active Status", "Full Payment", "Discount Amount", "Net Amount Paid", "Personal Trainer", "Referral Source");
+
+        // Create a StringBuilder to hold the formatted data
+        StringBuilder content = new StringBuilder();
+        content.append(header);
+
+        // Iterate through members and format their data
+        for (GymMember member : members) {
+            String plan = "N/A";
+            String price = "N/A";
+            String fullPayment = "N/A";
+            String discountAmount = "N/A";
+            String netAmountPaid = "N/A";
+            String personalTrainer = "N/A";
+            String referralSource = "N/A";
+
+            if (member instanceof RegularMember) {
+                RegularMember regularMember = (RegularMember) member;
+                plan = regularMember.getPlan();
+                price = String.valueOf(regularMember.getPrice());
+                referralSource = regularMember.getReferralSource();
+            } else if (member instanceof PremiumMember) {
+                PremiumMember premiumMember = (PremiumMember) member;
+                fullPayment = String.valueOf(premiumMember.isFullPayment() ? "Yes" : "No");
+                discountAmount = String.valueOf(premiumMember.getDiscountAmount());
+                netAmountPaid = String.valueOf(premiumMember.getPaidAmount());
+                personalTrainer = premiumMember.getPersonalTrainer();
+            }
+
+            String row = String.format("%-5d %-15s %-15s %-15s %-25s %-20s %-10s %-10s %-10d %-15d %-10s %-15s %-15s %-15s %-15s %-15s\n",
+                    member.getId(),
+                    member.getName(),
+                    member.getLocation(),
+                    member.getPhone(),
+                    member.getEmail(),
+                    member.getMembershipStartDate(),
+                    plan,
+                    price,
+                    member.getAttendance(),
+                    member.getLoyaltyPoints(),
+                    member.isActiveStatus() ? "Active" : "Inactive",
+                    fullPayment,
+                    discountAmount,
+                    netAmountPaid,
+                    personalTrainer,
+                    referralSource);
+
+            content.append(row);
+        }
+
+        // Write the content to a file
+        try (FileWriter fileWriter = new FileWriter("members_data.txt")) {
+            fileWriter.write(content.toString());
+            JOptionPane.showMessageDialog(mainFrame, "Data saved to file successfully!", "Save to File", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(mainFrame, "Error saving data to file: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 
     public static void main(String[] args) {
         new GymGUI();
@@ -572,23 +692,26 @@ public class GymGUI implements ActionListener {
             openFrameToDeactivateMembership();
         } else if (e.getSource() == buttonMarkAttendance) {
             markAttendanceFrame();
-        }else if (e.getSource()==buttonActivateMembership2){
+        } else if (e.getSource() == buttonActivateMembership2) {
             activateMembership();
-        }else if (e.getSource()==buttonDeactivateMemberShip2){
+        } else if (e.getSource() == buttonDeactivateMemberShip2) {
             deactivateMembership();
-        }else if (e.getSource()==buttonCalculateDiscount){
+        } else if (e.getSource() == buttonCalculateDiscount) {
             calculateDiscountFrame();
-        }else if (e.getSource()==buttonUpgradePlan){
+        } else if (e.getSource() == buttonUpgradePlan) {
             upgradePlanFrame();
-        } else if (e.getSource()==buttonUpgradePlan2) {
+        } else if (e.getSource() == buttonUpgradePlan2) {
             upgradePlan();
-
-        }else  if (e.getSource()==buttonCalculateDiscount2){
+        } else if (e.getSource() == buttonCalculateDiscount2) {
             calculateDiscount();
-        }else if (e.getSource()==buttonPayDueAmount){
+        } else if (e.getSource() == buttonPayDueAmount) {
             payDueAmountFrame();
-        }else if (e.getSource()==buttonPayDueAmount2){
+        } else if (e.getSource() == buttonPayDueAmount2) {
             payDueAmount();
+        } else if (e.getSource() == buttonDisplay) {
+            displayAllMembers();
+        } else if (e.getSource() == buttonSaveToFile) { // Add this condition
+            saveToFile();
         }
     }
 }
