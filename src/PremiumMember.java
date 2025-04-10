@@ -40,18 +40,18 @@ public class PremiumMember extends GymMember {
     }
 
     public String payDueAmount(double paidAmount){
-        if (this.isFullPayment){
+         if (this.isFullPayment){
             System.out.println("Full payment has been already done");
             return "Payment already done";
         }
 
         if (this.paidAmount+paidAmount>premiumCharge){
             System.out.println("Payment is more than the remaining premium charge");
-            return "Payment is more than the remaining premium charge";
+            return "Payment is more than the remaining premium charge" +"paidAmount: " + this.paidAmount + "remaining premium charge: " +(premiumCharge-this.paidAmount);
         }
 
         this.paidAmount = this.paidAmount+paidAmount;
-        double remainingAmount = premiumCharge - paidAmount;
+        double remainingAmount = premiumCharge - this.paidAmount;
 
         if (remainingAmount==0){
             isFullPayment = true;
